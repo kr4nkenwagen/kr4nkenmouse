@@ -1,0 +1,5 @@
+CompileFlags:
+  Remove: 
+    - -fno-tree-switch-conversion
+    - -fno-tree-tail-merge
+    - -fstrict-volatile-bitfields
