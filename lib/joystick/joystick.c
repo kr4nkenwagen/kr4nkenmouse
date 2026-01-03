@@ -1,6 +1,5 @@
 #include "joystick.h"
 #include "esp32-hal-adc.h"
-#include "vector2.h"
 #include <stdlib.h>
 #include <sys/_intsup.h>
 
