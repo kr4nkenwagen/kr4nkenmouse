@@ -65,8 +65,6 @@ void update_mouse_button(button_t *btn, event_t *e_pressed, event_t *e_down,
 }
 
 void update_mouse(mouse_t *ms) {
-
-  printf("ddd\n");
   update_joystick(ms->pointer);
   update_mouse_button(ms->m1, ms->m1_event_pressed, ms->m1_event_down,
                       ms->m1_event_released);
