@@ -30,6 +30,8 @@ joystick_t *init_joystick(uint8_t x, uint8_t y) {
     delete_joystick(js);
     return NULL;
   }
+  analogReadResolution(10);
+  analogSetAttenuation(ADC_11db);
   return js;
 }
 
@@ -47,6 +49,6 @@ void update_joystick(joystick_t *js) {
   if (!js) {
     return;
   }
-  js->value->x = update_joystick_axis(js->pins->x, js->value->x);
+  js->value->x = update_joystick_axis(js->pins->x, js->value->x) * -1;
   js->value->y = update_joystick_axis(js->pins->y, js->value->y);
 }
