@@ -46,8 +46,8 @@ void hook_mouse_event(mouse_t *ms, mouse_event_t event, void *fn) {
   }
 }
 
-void update_mouse_button(button_t *btn, event_t *e_pressed, event_t *e_down,
-                         event_t *e_released) {
+static void update_mouse_button(button_t *btn, event_t *e_pressed,
+                                event_t *e_down, event_t *e_released) {
   update_button(btn);
   switch (btn->state) {
   case PRESSED:

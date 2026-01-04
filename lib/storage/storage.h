@@ -1,0 +1,22 @@
+#ifndef STORAGE
+#define STORAGE
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "esp_err.h"
+#include <stdint.h>
+
+#define SENSITIVITY 100
+
+void init_storage();
+void update_storage();
+uint8_t get(const char *key);
+esp_err_t set(const char *key, uint8_t value);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
