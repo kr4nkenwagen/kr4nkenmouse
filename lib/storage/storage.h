@@ -12,7 +12,7 @@ extern "C" {
 
 void init_storage();
 void update_storage();
-uint8_t get(const char *key);
+int8_t get(const char *key);
 esp_err_t set(const char *key, uint8_t value);
 
 #ifdef __cplusplus

@@ -1,6 +1,5 @@
 #include "storage.h"
 #include "esp_err.h"
-#include "esp_log.h"
 #include "esp_system.h"
 #include "nvs.h"
 #include "nvs_flash.h"
@@ -26,17 +25,17 @@ esp_err_t set(const char *key, uint8_t value) {
   return err;
 }
 
-uint8_t get(const char *key) {
+int8_t get(const char *key) {
   nvs_handle_t handle;
   esp_err_t err;
   int8_t value = 0;
   err = nvs_open("storage", NVS_READONLY, &handle);
   if (err != ESP_OK) {
-    return NULL;
+    return -1;
   }
   err = nvs_get_i8(handle, key, &value);
   if (err != ESP_OK) {
-    return NULL;
+    return -1;
   }
   nvs_close(handle);
   return value;
@@ -44,7 +43,7 @@ uint8_t get(const char *key) {
 
 void init_storage() {
   nvs_flash_init();
-  if (!get("sensitivity")) {
+  if (get("sensitivity") == -1) {
     set("sensitivity", SENSITIVITY);
   }
 }
