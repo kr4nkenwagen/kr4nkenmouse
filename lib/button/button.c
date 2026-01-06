@@ -2,18 +2,13 @@
 #include "esp32-hal-gpio.h"
 #include "esp32-hal.h"
 #include <stdint.h>
-#include <stdlib.h>
-button_t *init_button(uint8_t pin) {
-  button_t *btn = malloc(sizeof(button_t));
-  if (!btn) {
-    return NULL;
-  }
+
+void init_button(button_t *btn, uint8_t pin) {
   btn->pin = pin;
   btn->value = 0;
   btn->state = IDLE;
   btn->last_debounce_time = millis();
   pinMode(btn->pin, INPUT_PULLUP);
-  return btn;
 }
 
 void update_button(button_t *btn) {
@@ -36,5 +31,3 @@ void update_button(button_t *btn) {
     }
   }
 }
-
-void delete_button(button_t *btn) { free(btn); }

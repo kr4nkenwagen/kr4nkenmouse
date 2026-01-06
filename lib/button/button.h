@@ -18,8 +18,7 @@ typedef struct button {
 
 #define DEBOUNCE_TIME 20
 
-button_t *init_button(uint8_t pin);
-void delete_button(button_t *btn);
+void init_button(button_t *btn, uint8_t pin);
 void update_button(button_t *btn);
 #ifdef __cplusplus
 }

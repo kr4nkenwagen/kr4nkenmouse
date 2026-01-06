@@ -71,6 +71,7 @@ The project is designed with a clean, modular C architecture, an event-driven in
 Defined at build time:
 ```c
 #define SENSITIVITY 100
+```
 
 Change Sensitivity at Runtime
 Using a serial terminal:

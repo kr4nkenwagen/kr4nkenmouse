@@ -20,7 +20,7 @@ BleMouse bleMouse("kr4nkenmouse");
 float delta_time = 0;
 uint32_t last_frame_time = 0;
 
-static mouse_t *mouse;
+static mouse_t mouse;
 
 void on_m1_pressed(event_data_t e) { bleMouse.press(MOUSE_LEFT); }
 void on_m1_released(event_data_t e) { bleMouse.release(MOUSE_LEFT); }
@@ -45,22 +45,17 @@ void setup() {
   init_storage();
   int8_t sens = SENSITIVITY;
   get("sensitivity", &sens);
-  mouse = init_mouse(M1_PIN, M2_PIN, X_PIN, Y_PIN, BACK_PIN, FORWARD_PIN,
-                     (uint8_t)sens);
-  if (!mouse) {
-    while (1) {
-      delay(1000);
-    }
-  }
-  hook_mouse_event(mouse, M1_PRESSED, (void *)on_m1_pressed);
-  hook_mouse_event(mouse, M1_RELEASED, (void *)on_m1_released);
-  hook_mouse_event(mouse, M2_PRESSED, (void *)on_m2_pressed);
-  hook_mouse_event(mouse, M2_RELEASED, (void *)on_m2_released);
-  hook_mouse_event(mouse, POINTER_MOVED, (void *)on_mouse_move);
-  hook_mouse_event(mouse, BACK_PRESSED, (void *)on_back_pressed);
-  hook_mouse_event(mouse, BACK_RELEASED, (void *)on_back_released);
-  hook_mouse_event(mouse, FORWARD_PRESSED, (void *)on_forward_pressed);
-  hook_mouse_event(mouse, FORWARD_RELEASED, (void *)on_forward_released);
+  init_mouse(&mouse, M1_PIN, M2_PIN, X_PIN, Y_PIN, BACK_PIN, FORWARD_PIN,
+             (uint8_t)sens);
+  hook_mouse_event(&mouse, M1_PRESSED, (void *)on_m1_pressed);
+  hook_mouse_event(&mouse, M1_RELEASED, (void *)on_m1_released);
+  hook_mouse_event(&mouse, M2_PRESSED, (void *)on_m2_pressed);
+  hook_mouse_event(&mouse, M2_RELEASED, (void *)on_m2_released);
+  hook_mouse_event(&mouse, POINTER_MOVED, (void *)on_mouse_move);
+  hook_mouse_event(&mouse, BACK_PRESSED, (void *)on_back_pressed);
+  hook_mouse_event(&mouse, BACK_RELEASED, (void *)on_back_released);
+  hook_mouse_event(&mouse, FORWARD_PRESSED, (void *)on_forward_pressed);
+  hook_mouse_event(&mouse, FORWARD_RELEASED, (void *)on_forward_released);
   bleMouse.begin();
   last_frame_time = millis();
 }
@@ -75,6 +70,6 @@ void loop() {
   if (delta_time < BT_REFRESH_RATE) {
     return;
   }
-  update_mouse(mouse);
+  update_mouse(&mouse);
   last_frame_time = current_time;
 }

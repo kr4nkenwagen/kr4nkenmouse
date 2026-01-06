@@ -3,15 +3,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-event_t *init_event(uint8_t id) {
-  event_t *e = (event_t *)malloc(sizeof(event_t));
-  if (!e) {
-    return NULL;
-  }
+void init_event(event_t *e, uint8_t id) {
   e->count = 0;
   e->fn_ptr = NULL;
   e->id = id;
-  return e;
 }
 
 void hook_event(event_t *e, void *fn) {
@@ -42,14 +37,4 @@ void trigger_event(event_t *e, void **arg, uint8_t argc) {
       func(data);
     }
   }
-}
-
-void delete_event(event_t *e) {
-  if (!e) {
-    return;
-  }
-  if (e->fn_ptr) {
-    free(e->fn_ptr);
-  }
-  free(e);
 }

@@ -17,10 +17,9 @@ typedef struct event {
   void **fn_ptr;
 } event_t;
 
-event_t *init_event(uint8_t id);
+void init_event(event_t *e, uint8_t id);
 void hook_event(event_t *e, void *fn);
 void trigger_event(event_t *e, void **arg, uint8_t argc);
-void delete_event(event_t *e);
 #ifdef __cplusplus
 }
 #endif
