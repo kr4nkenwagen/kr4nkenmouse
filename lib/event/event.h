@@ -4,6 +4,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define MAX_EVENT_HANDLERS 8
+
 typedef struct event_data {
   uint8_t id;
   void *sender;
@@ -14,7 +17,7 @@ typedef struct event_data {
 typedef struct event {
   uint8_t id;
   uint8_t count;
-  void **fn_ptr;
+  void (*handlers[MAX_EVENT_HANDLERS])(event_data_t);
 } event_t;
 
 void init_event(event_t *e, uint8_t id);
