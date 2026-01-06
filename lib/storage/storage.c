@@ -9,7 +9,6 @@
 
 #define BUFFER_SIZE 32
 static const char *TAG = "NVS_STORAGE";
-static int8_t pending_restart = 0;
 
 static int parse_int8(const char *s, int8_t *out) {
   char *end;
