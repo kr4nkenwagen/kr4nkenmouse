@@ -8,7 +8,7 @@ extern "C" {
 #include "esp_err.h"
 #include <stdint.h>
 
-#define SENSITIVITY 100
+#define DEFAULT_SENSITIVITY 100
 
 void init_storage();
 void update_storage();

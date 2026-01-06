@@ -1,6 +1,6 @@
 # ESP32 BLE Mouse (Joystick + Buttons)
 
-An ESP32-based Bluetooth Low Energy (BLE) mouse implementation using an analog joystick for pointer movement and physical buttons for mouse actions.  
+An ESP32-based Bluetooth Low Energy (BLE) mouse implementation using an analog joystick for pointer movement and physical buttons for mouse actions.
 The project is designed with a clean, modular C architecture, an event-driven input system, and persistent configuration storage using ESP32 NVS.
 
 ---

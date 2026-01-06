@@ -17,6 +17,7 @@ void hook_event(event_t *e, void *fn) {
   }
   e->handlers[e->count++] = fn;
 }
+
 void trigger_event(event_t *e, void **arg, uint8_t argc) {
   if (!e) {
     return;

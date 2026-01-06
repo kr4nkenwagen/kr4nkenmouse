@@ -88,7 +88,7 @@ void init_storage() {
   }
   int8_t tmp = 0;
   if (get("sensitivity", &tmp) == ESP_ERR_NVS_NOT_FOUND) {
-    set("sensitivity", SENSITIVITY);
+    set("sensitivity", DEFAULT_SENSITIVITY);
   }
 }
 
