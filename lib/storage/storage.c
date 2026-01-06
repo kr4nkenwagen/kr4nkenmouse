@@ -8,7 +8,6 @@
 #include <string.h>
 
 #define BUFFER_SIZE 32
-static const char *TAG = "NVS_STORAGE";
 
 static int parse_int8(const char *s, int8_t *out) {
   char *end;
@@ -37,7 +36,16 @@ static int parse_int8(const char *s, int8_t *out) {
   return 1;
 }
 
-esp_err_t set(const char *key, uint8_t value) {
+static void parse_function(const char *key, int8_t value) {
+  if (strcmp(key, "set_sensitivity") == 0) {
+    set("sensitivity", value);
+  }
+}
+
+esp_err_t set(const char *key, int8_t value) {
+  if (!key || !*key) {
+    return ESP_ERR_INVALID_ARG;
+  }
   nvs_handle_t handle;
   esp_err_t err;
   err = nvs_open("storage", NVS_READWRITE, &handle);
@@ -54,32 +62,33 @@ esp_err_t set(const char *key, uint8_t value) {
   return err;
 }
 
-int8_t get(const char *key) {
+esp_err_t get(const char *key, int8_t *out) {
   nvs_handle_t handle;
   esp_err_t err;
   int8_t value = 0;
   err = nvs_open("storage", NVS_READONLY, &handle);
   if (err != ESP_OK) {
-    return -1;
+    return err;
   }
   err = nvs_get_i8(handle, key, &value);
   if (err != ESP_OK) {
-    return -1;
+    return err;
   }
   nvs_close(handle);
-  return value;
+  *out = value;
+  return ESP_OK;
 }
 
 void init_storage() {
-  nvs_flash_init();
-  if (get("sensitivity") == -1) {
-    set("sensitivity", SENSITIVITY);
+  esp_err_t err = nvs_flash_init();
+  if (err == ESP_ERR_NVS_NO_FREE_PAGES ||
+      err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+    nvs_flash_erase();
+    nvs_flash_init();
   }
-}
-
-void parse_function(const char *key, int8_t value) {
-  if (strcmp(key, "set_sensitivity") == 0) {
-    set("sensitivity", value);
+  int8_t tmp = 0;
+  if (get("sensitivity", &tmp) == ESP_ERR_NVS_NOT_FOUND) {
+    set("sensitivity", SENSITIVITY);
   }
 }
 

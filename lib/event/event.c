@@ -18,15 +18,15 @@ void hook_event(event_t *e, void *fn) {
   if (!e || e->count >= 254) {
     return;
   }
-  e->count++;
   if (!e->fn_ptr) {
-    e->fn_ptr = malloc(sizeof(void *) * e->count);
+    e->fn_ptr = malloc(sizeof(void *));
   } else {
-    e->fn_ptr = realloc(e->fn_ptr, sizeof(void *) * e->count);
+    e->fn_ptr = realloc(e->fn_ptr, sizeof(void *) * e->count + 1);
   }
   if (!e->fn_ptr) {
     return;
   }
+  e->count++;
   e->fn_ptr[e->count - 1] = fn;
 }
 
@@ -48,7 +48,7 @@ void delete_event(event_t *e) {
   if (!e) {
     return;
   }
-  if (!e->fn_ptr) {
+  if (e->fn_ptr) {
     free(e->fn_ptr);
   }
   free(e);

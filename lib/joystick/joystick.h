@@ -8,10 +8,8 @@ extern "C" {
 #include "vector2.h"
 
 typedef struct joystick {
-  vector2_t *pins;
-  uint8_t sw_pin;
-  uint8_t sw_val;
-  vector2_t *value;
+  vector2_t pins;
+  volatile vector2_t position;
 } joystick_t;
 
 #define MOUSE_DEADZONE 1.0

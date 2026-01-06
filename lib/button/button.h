@@ -11,9 +11,9 @@ typedef enum button_state { PRESSED, DOWN, RELEASED, IDLE } button_state_t;
 
 typedef struct button {
   uint8_t pin;
-  uint8_t value;
+  volatile uint8_t value;
   button_state_t state;
-  uint32_t last_debounce_time;
+  volatile uint32_t last_debounce_time;
 } button_t;
 
 #define DEBOUNCE_TIME 20

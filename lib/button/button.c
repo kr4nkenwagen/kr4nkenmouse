@@ -4,13 +4,14 @@
 #include <stdint.h>
 #include <stdlib.h>
 button_t *init_button(uint8_t pin) {
-  button_t *btn = (button_t *)malloc(sizeof(button_t));
+  button_t *btn = malloc(sizeof(button_t));
   if (!btn) {
     return NULL;
   }
   btn->pin = pin;
   btn->value = 0;
   btn->state = IDLE;
+  btn->last_debounce_time = millis();
   pinMode(btn->pin, INPUT_PULLUP);
   return btn;
 }
