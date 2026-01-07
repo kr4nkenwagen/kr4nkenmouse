@@ -62,17 +62,6 @@ static void parse_function(const char *key, int8_t value) {
     set("sensitivity", value);
   }
   if (strcmp(key, "set_m1") == 0) {
-    set("m1_pin", value);
-  }
-  if (strcmp(key, "set_m2") == 0) {
-    set("m2_pin", value);
-  }
-  if (strcmp(key, "set_m4") == 0) {
-    set("m4_pin", value);
-  }
-  if (strcmp(key, "set_m5") == 0) {
-    set("m5_pin", value);
-  }
     unset_pin(value);
     set("m1_pin", value);
   }
