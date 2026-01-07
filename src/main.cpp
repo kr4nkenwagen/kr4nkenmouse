@@ -8,14 +8,9 @@
 
 BleMouse bleMouse("kr4nkenmouse");
 
-#define SENSITIVITY 100
 #define BT_REFRESH_RATE 0.01
-#define M1_PIN 8
-#define M2_PIN 7
 #define X_PIN 3
 #define Y_PIN 4
-#define BACK_PIN 9
-#define FORWARD_PIN 10
 
 float delta_time = 0;
 uint32_t last_frame_time = 0;
@@ -26,10 +21,10 @@ void on_m1_pressed(event_data_t e) { bleMouse.press(MOUSE_LEFT); }
 void on_m1_released(event_data_t e) { bleMouse.release(MOUSE_LEFT); }
 void on_m2_pressed(event_data_t e) { bleMouse.press(MOUSE_RIGHT); }
 void on_m2_released(event_data_t e) { bleMouse.release(MOUSE_RIGHT); }
-void on_back_pressed(event_data_t e) { bleMouse.press(MOUSE_BACK); }
-void on_back_released(event_data_t e) { bleMouse.release(MOUSE_BACK); }
-void on_forward_pressed(event_data_t e) { bleMouse.press(MOUSE_FORWARD); }
-void on_forward_released(event_data_t e) { bleMouse.release(MOUSE_FORWARD); }
+void on_m4_pressed(event_data_t e) { bleMouse.press(MOUSE_BACK); }
+void on_m4_released(event_data_t e) { bleMouse.release(MOUSE_BACK); }
+void on_m5_pressed(event_data_t e) { bleMouse.press(MOUSE_FORWARD); }
+void on_m5_released(event_data_t e) { bleMouse.release(MOUSE_FORWARD); }
 
 void on_mouse_move(event_data_t e) {
   if (e.argc != 2) {
@@ -43,19 +38,27 @@ void on_mouse_move(event_data_t e) {
 void setup() {
   Serial.begin(115200);
   init_storage();
-  int8_t sens = SENSITIVITY;
+  int8_t sens = DEFAULT_SENSITIVITY;
+  int8_t m1_pin = DEFAULT_M1_PIN;
+  int8_t m2_pin = DEFAULT_M2_PIN;
+  int8_t m4_pin = DEFAULT_M4_PIN;
+  int8_t m5_pin = DEFAULT_M5_PIN;
   get("sensitivity", &sens);
-  init_mouse(&mouse, M1_PIN, M2_PIN, X_PIN, Y_PIN, BACK_PIN, FORWARD_PIN,
-             (uint8_t)sens);
+  get("m1_pin", &m1_pin);
+  get("m2_pin", &m2_pin);
+  get("m4_pin", &m4_pin);
+  get("m5_pin", &m5_pin);
+  init_mouse(&mouse, (uint8_t)m1_pin, (uint8_t)m2_pin, X_PIN, Y_PIN,
+             (uint8_t)m4_pin, (uint8_t)m5_pin, (uint8_t)sens);
   hook_mouse_event(&mouse, M1_PRESSED, (void *)on_m1_pressed);
   hook_mouse_event(&mouse, M1_RELEASED, (void *)on_m1_released);
   hook_mouse_event(&mouse, M2_PRESSED, (void *)on_m2_pressed);
   hook_mouse_event(&mouse, M2_RELEASED, (void *)on_m2_released);
   hook_mouse_event(&mouse, POINTER_MOVED, (void *)on_mouse_move);
-  hook_mouse_event(&mouse, BACK_PRESSED, (void *)on_back_pressed);
-  hook_mouse_event(&mouse, BACK_RELEASED, (void *)on_back_released);
-  hook_mouse_event(&mouse, FORWARD_PRESSED, (void *)on_forward_pressed);
-  hook_mouse_event(&mouse, FORWARD_RELEASED, (void *)on_forward_released);
+  hook_mouse_event(&mouse, M4_PRESSED, (void *)on_m4_pressed);
+  hook_mouse_event(&mouse, M4_RELEASED, (void *)on_m4_released);
+  hook_mouse_event(&mouse, M5_PRESSED, (void *)on_m5_pressed);
+  hook_mouse_event(&mouse, M5_RELEASED, (void *)on_m5_released);
   bleMouse.begin();
   last_frame_time = millis();
 }

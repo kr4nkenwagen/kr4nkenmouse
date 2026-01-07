@@ -9,6 +9,10 @@ extern "C" {
 #include <stdint.h>
 
 #define DEFAULT_SENSITIVITY 100
+#define DEFAULT_M1_PIN 8
+#define DEFAULT_M2_PIN 7
+#define DEFAULT_M4_PIN 9
+#define DEFAULT_M5_PIN 10
 
 void init_storage();
 void update_storage();

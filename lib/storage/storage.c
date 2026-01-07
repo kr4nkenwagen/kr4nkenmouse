@@ -40,6 +40,18 @@ static void parse_function(const char *key, int8_t value) {
   if (strcmp(key, "set_sensitivity") == 0) {
     set("sensitivity", value);
   }
+  if (strcmp(key, "set_m1") == 0) {
+    set("m1_pin", value);
+  }
+  if (strcmp(key, "set_m2") == 0) {
+    set("m2_pin", value);
+  }
+  if (strcmp(key, "set_m4") == 0) {
+    set("m4_pin", value);
+  }
+  if (strcmp(key, "set_m5") == 0) {
+    set("m5_pin", value);
+  }
 }
 
 esp_err_t set(const char *key, int8_t value) {
@@ -80,6 +92,7 @@ esp_err_t get(const char *key, int8_t *out) {
 }
 
 void init_storage() {
+  nvs_flash_erase();
   esp_err_t err = nvs_flash_init();
   if (err == ESP_ERR_NVS_NO_FREE_PAGES ||
       err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
@@ -88,6 +101,10 @@ void init_storage() {
   }
   int8_t tmp = 0;
   if (get("sensitivity", &tmp) == ESP_ERR_NVS_NOT_FOUND) {
+    set("m1_pin", DEFAULT_M1_PIN);
+    set("m2_pin", DEFAULT_M2_PIN);
+    set("m4_pin", DEFAULT_M4_PIN);
+    set("m5_pin", DEFAULT_M5_PIN);
     set("sensitivity", DEFAULT_SENSITIVITY);
   }
 }
