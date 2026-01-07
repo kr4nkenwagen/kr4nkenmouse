@@ -1,5 +1,6 @@
 #include "storage.h"
 #include "esp_err.h"
+#include "esp_system.h"
 #include "nvs.h"
 #include "nvs_flash.h"
 #include "serial_handler.h"
@@ -36,22 +37,47 @@ static int parse_int8(const char *s, int8_t *out) {
   return 1;
 }
 
+static void unset_pin(int8_t pin) {
+  int8_t tmp = 0;
+  get("m1_pin", &tmp);
+  if (tmp == pin) {
+    set("m1_pin", 0);
+  }
+  get("m2_pin", &tmp);
+  if (tmp == pin) {
+    set("m2_pin", 0);
+  }
+  get("m4_pin", &tmp);
+  if (tmp == pin) {
+    set("m4_pin", 0);
+  }
+  get("m5_pin", &tmp);
+  if (tmp == pin) {
+    set("m5_pin", 0);
+  }
+}
+
 static void parse_function(const char *key, int8_t value) {
   if (strcmp(key, "set_sensitivity") == 0) {
     set("sensitivity", value);
   }
   if (strcmp(key, "set_m1") == 0) {
+    unset_pin(value);
     set("m1_pin", value);
   }
   if (strcmp(key, "set_m2") == 0) {
+    unset_pin(value);
     set("m2_pin", value);
   }
   if (strcmp(key, "set_m4") == 0) {
+    unset_pin(value);
     set("m4_pin", value);
   }
   if (strcmp(key, "set_m5") == 0) {
+    unset_pin(value);
     set("m5_pin", value);
   }
+  esp_restart();
 }
 
 esp_err_t set(const char *key, int8_t value) {
