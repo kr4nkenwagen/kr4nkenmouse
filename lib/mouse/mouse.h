@@ -3,6 +3,7 @@
 #include "button.h"
 #include "event.h"
 #include "joystick.h"
+#include "led.h"
 #include <stdint.h>
 #ifdef __cplusplus
 extern "C" {
@@ -43,10 +44,12 @@ typedef struct mouse {
   event_t m5_event_down;
   event_t m5_event_released;
   event_t ptr_event;
+  led_t on_led;
 } mouse_t;
 
 void init_mouse(mouse_t *ms, uint8_t m1, uint8_t m2, uint8_t ptr_x,
-                uint8_t ptr_y, uint8_t m4, uint8_t m5, uint8_t sens);
+                uint8_t ptr_y, uint8_t m4, uint8_t m5, uint8_t sens,
+                uint8_t on_led);
 void update_mouse(mouse_t *ms);
 void hook_mouse_event(mouse_t *ms, mouse_event_t event, void *fn);
 #ifdef __cplusplus
