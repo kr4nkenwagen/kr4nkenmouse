@@ -11,7 +11,7 @@ BleMouse bleMouse("kr4nkenmouse");
 #define BT_REFRESH_RATE 0.01
 #define X_PIN 3
 #define Y_PIN 4
-#define ON_LED_PIN 21
+#define power_led_PIN 21
 
 float delta_time = 0;
 uint32_t last_frame_time = 0;
@@ -50,7 +50,7 @@ void setup() {
   get("m4_pin", &m4_pin);
   get("m5_pin", &m5_pin);
   init_mouse(&mouse, (uint8_t)m1_pin, (uint8_t)m2_pin, X_PIN, Y_PIN,
-             (uint8_t)m4_pin, (uint8_t)m5_pin, (uint8_t)sens, ON_LED_PIN);
+             (uint8_t)m4_pin, (uint8_t)m5_pin, (uint8_t)sens, power_led_PIN);
   hook_mouse_event(&mouse, M1_PRESSED, (void *)on_m1_pressed);
   hook_mouse_event(&mouse, M1_RELEASED, (void *)on_m1_released);
   hook_mouse_event(&mouse, M2_PRESSED, (void *)on_m2_pressed);
@@ -67,10 +67,11 @@ void setup() {
 void loop() {
   update_storage();
   if (!bleMouse.isConnected()) {
+    led_off(&mouse.power_led);
     return;
   }
-  if (!is_led_on(&mouse.on_led)) {
-    led_on(&mouse.on_led);
+  if (!is_led_on(&mouse.power_led)) {
+    led_on(&mouse.power_led);
   }
   uint32_t current_time = millis();
   delta_time = (current_time - last_frame_time) / 1000.0;

@@ -7,7 +7,7 @@
 
 void init_mouse(mouse_t *ms, uint8_t m1, uint8_t m2, uint8_t ptr_x,
                 uint8_t ptr_y, uint8_t m4, uint8_t m5, uint8_t sens,
-                uint8_t on_led) {
+                uint8_t power_led) {
   init_joystick(&ms->pointer, ptr_x, ptr_y);
   init_button(&ms->m1, m1);
   init_button(&ms->m2, m2);
@@ -26,7 +26,7 @@ void init_mouse(mouse_t *ms, uint8_t m1, uint8_t m2, uint8_t ptr_x,
   init_event(&ms->m5_event_down, M5_DOWN);
   init_event(&ms->m5_event_released, M5_RELEASED);
   init_event(&ms->ptr_event, POINTER_MOVED);
-  init_led(&ms->on_led, on_led);
+  init_led(&ms->power_led, power_led);
   ms->sensitivity = sens;
 }
 

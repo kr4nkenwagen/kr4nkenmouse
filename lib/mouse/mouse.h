@@ -44,7 +44,7 @@ typedef struct mouse {
   event_t m5_event_down;
   event_t m5_event_released;
   event_t ptr_event;
-  led_t on_led;
+  led_t power_led;
 } mouse_t;
 
 void init_mouse(mouse_t *ms, uint8_t m1, uint8_t m2, uint8_t ptr_x,
