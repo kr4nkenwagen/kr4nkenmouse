@@ -79,25 +79,22 @@ void clear_nice_view_display(nice_view_t *nw) {
 }
 
 void draw_char(nice_view_t *nw, uvector2_t pos, char c, uint8_t color) {
-  if (c < 32 || c > 126)
+  if (c < 32 || c > 126) {
     c = ' ';
+  }
   uint8_t font_idx = c - 32;
-
   for (int col = 0; col < 5; col++) {
     uint8_t line_data[20] = {0};
     uint8_t current_line = pos.y + col + 1;
-
     for (int row = 0; row < 7; row++) {
       if ((font5x7[font_idx][col] >> row) & 0x01) {
-        // This is the "Top-to-Bottom" math we had
         int px = 159 - (pos.x + row);
-
         int byte_idx = px / 8;
         int bit_idx = px % 8;
-
         if (byte_idx < 20) {
-          if (color)
+          if (color) {
             line_data[byte_idx] |= (1 << bit_idx);
+          }
         }
       }
     }
@@ -116,30 +113,21 @@ void draw_char(nice_view_t *nw, uvector2_t pos, char c, uint8_t color) {
 void flush_line_buffer(nice_view_t *nw, uint8_t line_addr,
                        const char *line_text) {
   uint8_t line_data[20] = {0};
-
-  // Iterate through every character in this text line (max ~20 chars)
   for (int char_pos = 0; char_pos < 20; char_pos++) {
     char c = line_text[char_pos];
-    if (c == '\0')
-      break; // End of string
-    if (c < 32 || c > 126)
+    if (c == '\0') {
+      break;
+    }
+    if (c < 32 || c > 126) {
       c = ' ';
-
+    }
     uint8_t font_idx = c - 32;
-
-    // Find which 'column' of the font matches this physical scanline
-    // We calculate this based on the line_addr % char_height
-    int font_col = (line_addr - 10) % 8; // Adjust 10 to your Y-offset
-
+    int font_col = (line_addr - 10) % 8;
     if (font_col >= 0 && font_col < 5) {
       uint8_t char_slice = font5x7[font_idx][font_col];
-
       for (int bit = 0; bit < 7; bit++) {
         if ((char_slice >> bit) & 0x01) {
-          // Map the bit to the correct physical X position
-          // pos.x is determined by the char_pos * line_spacing
           int px = 159 - ((char_pos * 16) + bit);
-
           int byte_idx = px / 8;
           int bit_idx = px % 8;
           if (byte_idx < 20) {
@@ -149,14 +137,11 @@ void flush_line_buffer(nice_view_t *nw, uint8_t line_addr,
       }
     }
   }
-
-  // Now send the FULL line to the display—this preserves all characters!
   uint8_t frame[23];
   frame[0] = 0x01;
   frame[1] = line_addr;
   memcpy(&frame[2], line_data, 20);
   frame[22] = 0x00;
-
   spi_transaction_t t = {.length = 23 * 8, .tx_buffer = frame};
   spi_device_transmit(nw->handler, &t);
 }

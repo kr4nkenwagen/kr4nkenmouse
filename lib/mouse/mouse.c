@@ -29,7 +29,6 @@ void init_mouse(mouse_t *ms, uint8_t m1, uint8_t m2, uint8_t ptr_x,
   init_event(&ms->ptr_event, POINTER_MOVED);
   init_led(&ms->power_led, power_led);
   ms->sensitivity = sens;
-  logmsg("MOUSE INIT");
 }
 
 void hook_mouse_event(mouse_t *ms, mouse_event_t event, void *fn) {

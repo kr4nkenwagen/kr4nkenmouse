@@ -18,7 +18,6 @@ BleMouse bleMouse("kr4nkenmouse");
 static float delta_time = 0;
 static uint32_t last_frame_time = 0;
 
-static nice_view_t display;
 static mouse_t mouse;
 
 static void on_m1_pressed(event_data_t e) { bleMouse.press(MOUSE_LEFT); }
@@ -41,8 +40,6 @@ static void on_mouse_move(event_data_t e) {
 
 void ble_mouse_setup() {
   Serial.begin(115200);
-  init_nice_view_display(&display, 19, 20, 18);
-  init_logger(&display);
   init_storage();
   int8_t sens = DEFAULT_SENSITIVITY;
   int8_t m1_pin = DEFAULT_M1_PIN;
@@ -67,7 +64,6 @@ void ble_mouse_setup() {
   hook_mouse_event(&mouse, M5_RELEASED, (void *)on_m5_released);
   bleMouse.begin();
   last_frame_time = millis();
-  logmsg("SETUP");
 }
 
 void ble_mouse_loop() {
@@ -78,7 +74,6 @@ void ble_mouse_loop() {
     return;
   }
   if (!is_led_on(&mouse.power_led)) {
-    logmsg("BT CONN");
     led_on(&mouse.power_led);
   }
   uint32_t current_time = millis();
